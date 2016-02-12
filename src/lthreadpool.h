@@ -45,4 +45,4 @@ static int luv_thread_arg_set(lua_State* L, luv_thread_arg_t* args, int idx, int
 static int luv_thread_arg_push(lua_State* L, const luv_thread_arg_t* args);
 static void luv_thread_arg_clear(luv_thread_arg_t* args);
 
-#endif //LUV_LTHREADPOOL_H
+#endif /*LUV_LTHREADPOOL_H*/
