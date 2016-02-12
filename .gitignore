@@ -8,3 +8,6 @@ luv-*.tar.gz
 luv-*.src.rock
 luv-*/
 build.luarocks/
+
+src/*.o
+libluv.a
