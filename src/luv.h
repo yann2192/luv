@@ -21,6 +21,7 @@
 #include <lauxlib.h>
 #include "uv.h"
 
+#ifdef LUV_BUILD_SYSTEM
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -60,6 +61,7 @@
 # define lua_resume(L,F,n) lua_resume(L,n)
 # define lua_pushglobaltable(L) lua_pushvalue(L, LUA_GLOBALSINDEX)
 #endif
+#endif
 
 /* There is a 1-1 relation between a lua_State and a uv_loop_t */
 /* These helpers will give you one if you have the other */
@@ -74,6 +76,7 @@ LUALIB_API uv_loop_t* luv_loop(lua_State* L);
 /* as you use a different lua_State and thread for each.  */
 LUALIB_API int luaopen_luv (lua_State *L);
 
+#ifdef LUV_BUILD_SYSTEM
 #include "util.h"
 #include "lhandle.h"
 #include "lreq.h"
@@ -98,6 +101,7 @@ static int luv_sock_string_to_num(const char* string);
 static const char* luv_sock_num_to_string(const int num);
 static int luv_sig_string_to_num(const char* string);
 static const char* luv_sig_num_to_string(const int num);
+#endif
 
 typedef lua_State* (*luv_acquire_vm)();
 typedef void (*luv_release_vm)(lua_State* L);

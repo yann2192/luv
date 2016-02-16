@@ -1,5 +1,5 @@
 CFLAGS  = -Wall -Wextra -pipe -Wno-long-long -Wno-maybe-uninitialized -Wno-unused-parameter
-CFLAGS += -O3 -fvisibility=hidden
+CFLAGS += -O3 -fvisibility=hidden -DLUV_BUILD_SYSTEM
 INCLUDE = -I. -I$(LADEPS)
 
 SRC = $(shell $(FIND) src -name '*.c')
