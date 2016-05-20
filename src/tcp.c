@@ -24,7 +24,13 @@ static uv_tcp_t* luv_check_tcp(lua_State* L, int index) {
 
 static int luv_new_tcp(lua_State* L) {
   uv_tcp_t* handle = luv_newuserdata(L, sizeof(*handle));
-  int ret = uv_tcp_init(luv_loop(L), handle);
+  int ret;
+  if (lua_isnoneornil(L, 1)) {
+    ret = uv_tcp_init(luv_loop(L), handle);
+  }
+  else {
+    ret = uv_tcp_init_ex(luv_loop(L), handle, lua_tointeger(L, 1));
+  }
   if (ret < 0) {
     lua_pop(L, 1);
     return luv_error(L, ret);
@@ -175,6 +181,7 @@ static int luv_tcp_connect(lua_State* L) {
   req->data = luv_setup_req(L, ref);
   ret = uv_tcp_connect(req, handle, (struct sockaddr*)&addr, luv_connect_cb);
   if (ret < 0) {
+    luv_cleanup_req(L, req->data);
     lua_pop(L, 1);
     return luv_error(L, ret);
   }

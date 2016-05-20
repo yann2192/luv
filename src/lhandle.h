@@ -19,8 +19,9 @@
 
 #include "luv.h"
 
-/* There are two slots for holding callbacks.  One is for the CLOSED event. */
-/* The other slot is for all others since they never conflict in practice. */
+/* There are two slots for holding callbacks.  One is for the CLOSED event.
+   The other slot is for all others since they never conflict in practice.
+*/
 #define luv_callback_id int
 #define LUV_CLOSED 0
 #define LUV_TIMEOUT 1
@@ -47,12 +48,14 @@ typedef struct {
 /* Setup the handle at the top of the stack */
 static luv_handle_t* luv_setup_handle(lua_State* L);
 
-/* Store a lua callback in a luv_handle for future callbacks. */
-/* Either replace an existing callback by id or append a new one at the end. */
+/* Store a lua callback in a luv_handle for future callbacks.
+   Either replace an existing callback by id or append a new one at the end.
+*/
 static void luv_check_callback(lua_State* L, luv_handle_t* data, luv_callback_id id, int index);
 
-/* Lookup a function and call it with nargs */
-/* If there is no such function, pop the args. */
+/* Lookup a function and call it with nargs
+   If there is no such function, pop the args.
+*/
 static void luv_call_callback(lua_State* L, luv_handle_t* data, luv_callback_id id, int nargs);
 
 /* Push a userdata on the stack from a handle */

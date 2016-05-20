@@ -1,4 +1,4 @@
-# Added LUAJIT_ADD_EXECUTABLE Ryan Phillips <ryan at trolocsis.com>
+# Added LUA_ADD_EXECUTABLE Ryan Phillips <ryan at trolocsis.com>
 # This CMakeLists.txt has been first taken from LuaDist
 # Copyright (C) 2007-2011 LuaDist.
 # Created by Peter Drahoš
@@ -227,6 +227,7 @@ SET(SRC_LJCORE
   ${LUAJIT_DIR}/src/lj_buf.c
   ${LUAJIT_DIR}/src/lj_profile.c
   ${LUAJIT_DIR}/src/lj_strfmt.c
+  ${LUAJIT_DIR}/src/lj_strfmt_num.c
   ${LUAJIT_DIR}/src/lj_bc.c
   ${LUAJIT_DIR}/src/lj_obj.c
   ${LUAJIT_DIR}/src/lj_str.c
@@ -284,6 +285,7 @@ SET(SRC_BUILDVM
   ${LUAJIT_DIR}/src/host/buildvm_lib.c
   ${LUAJIT_DIR}/src/host/buildvm_fold.c
   ${CMAKE_CURRENT_BINARY_DIR}/buildvm_arch.h)
+
 
 ## GENERATE
 ADD_EXECUTABLE(buildvm ${SRC_BUILDVM})
@@ -401,7 +403,7 @@ MACRO(LUAJIT_add_custom_commands luajit_target)
   ENDFOREACH(file)
 ENDMACRO()
 
-MACRO(LUAJIT_ADD_EXECUTABLE luajit_target)
+MACRO(LUA_ADD_EXECUTABLE luajit_target)
   LUAJIT_add_custom_commands(${luajit_target} ${ARGN})
   add_executable(${luajit_target} ${target_srcs})
-ENDMACRO(LUAJIT_ADD_EXECUTABLE luajit_target)
+ENDMACRO(LUA_ADD_EXECUTABLE luajit_target)

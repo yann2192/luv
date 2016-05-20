@@ -24,7 +24,13 @@ static uv_udp_t* luv_check_udp(lua_State* L, int index) {
 
 static int luv_new_udp(lua_State* L) {
   uv_udp_t* handle = luv_newuserdata(L, sizeof(*handle));
-  int ret = uv_udp_init(luv_loop(L), handle);
+  int ret;
+  if (lua_isnoneornil(L, 1)) {
+    ret = uv_udp_init(luv_loop(L), handle);
+  }
+  else {
+    ret = uv_udp_init_ex(luv_loop(L), handle, lua_tointeger(L, 1));
+  }
   if (ret < 0) {
     lua_pop(L, 1);
     return luv_error(L, ret);
@@ -172,6 +178,7 @@ static int luv_udp_send(lua_State* L) {
   req->data = luv_setup_req(L, ref);
   ret = uv_udp_send(req, handle, &buf, 1, (struct sockaddr*)&addr, luv_udp_send_cb);
   if (ret < 0) {
+    luv_cleanup_req(L, req->data);
     lua_pop(L, 1);
     return luv_error(L, ret);
   }

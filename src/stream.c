@@ -26,6 +26,7 @@ static uv_stream_t* luv_check_stream(lua_State* L, int index) {
   int isStream;
   uv_stream_t* handle;
   if (!(handle = *(void**) lua_touserdata(L, index))) { goto fail; }
+  if (!handle->data) { goto fail; }
   lua_getfield(L, LUA_REGISTRYINDEX, "uv_stream");
   lua_getmetatable(L, index < 0 ? index - 1 : index);
   lua_rawget(L, -2);
@@ -52,6 +53,7 @@ static int luv_shutdown(lua_State* L) {
   req->data = luv_setup_req(L, ref);
   ret = uv_shutdown(req, handle, luv_shutdown_cb);
   if (ret < 0) {
+    luv_cleanup_req(L, req->data);
     lua_pop(L, 1);
     return luv_error(L, ret);
   }
@@ -176,6 +178,7 @@ static int luv_write(lua_State* L) {
     return luaL_argerror(L, 2, "data must be string or table of strings");
   }
   if (ret < 0) {
+    luv_cleanup_req(L, req->data);
     lua_pop(L, 1);
     return luv_error(L, ret);
   }
@@ -208,6 +211,7 @@ static int luv_write2(lua_State* L) {
     return luaL_argerror(L, 2, "data must be string or table of strings");
   }
   if (ret < 0) {
+    luv_cleanup_req(L, req->data);
     lua_pop(L, 1);
     return luv_error(L, ret);
   }
@@ -260,4 +264,3 @@ static int luv_stream_set_blocking(lua_State* L) {
   lua_pushinteger(L, ret);
   return 1;
 }
-
